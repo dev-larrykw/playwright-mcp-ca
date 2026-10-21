@@ -50,7 +50,13 @@ test('real Linux Chromium accepts the supplied CA and rejects untrusted certific
     const configured = await connect(true);
     const trusted = await configured.callTool({ name: 'browser_navigate', arguments: { url: `https://localhost:${trustedPort}` } });
     assert.notEqual(trusted.isError, true, JSON.stringify(trusted));
-    assert.match(JSON.stringify(trusted), /CA validation succeeded/);
+    // Navigation may return a snapshot-file link instead of inline page text.
+    const heading = await configured.callTool({
+      name: 'browser_evaluate',
+      arguments: { function: "() => document.querySelector('h1')?.textContent" },
+    });
+    assert.notEqual(heading.isError, true, JSON.stringify(heading));
+    assert.match(JSON.stringify(heading), /CA validation succeeded/);
     const untrusted = await configured.callTool({ name: 'browser_navigate', arguments: { url: `https://localhost:${untrustedPort}` } });
     assert.equal(untrusted.isError, true, JSON.stringify(untrusted));
     assert.match(JSON.stringify(untrusted), /ERR_CERT_AUTHORITY_INVALID/);

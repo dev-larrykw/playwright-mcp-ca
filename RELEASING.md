@@ -1,6 +1,6 @@
 # Publish this fork to GitHub and GHCR
 
-Local directory: `/Users/larrywright/Documents/Obot/playwright-mcp-ca`.
+Run the following commands from your local clone of the repository.
 
 The checkout uses `main`. Microsoft's repository is retained as the `upstream`
 remote; `origin` is reserved for your own repository. Full upstream Git history
@@ -8,10 +8,10 @@ has been fetched so the initial push does not depend on a shallow clone.
 
 ## First push and release
 
-Install GitHub CLI if needed (`brew install gh` on this Mac), then run:
+Install GitHub CLI if needed (`brew install gh` on macOS), then run:
 
 ```sh
-cd /Users/larrywright/Documents/Obot/playwright-mcp-ca
+cd /path/to/playwright-mcp-ca
 gh auth login
 git add .
 git commit -m "feat(ca): support Linux CA bundles and GHCR releases"
