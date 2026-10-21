@@ -1,0 +1,8 @@
+# Send only source files needed by the Dockerfile to the builder.
+**
+!Dockerfile
+!.dockerignore
+!package.json
+!package-lock.json
+!*.js
+!*.ts

@@ -27,6 +27,20 @@ if (process.argv.includes('install-browser')) {
 
 const packageJSON = require('./package.json');
 const p = program.version('Version ' + packageJSON.version).name('Playwright MCP');
+p.option('--ca-bundle <path>', 'Linux: trust PEM CA certificates in a temporary Chromium NSS database (env PLAYWRIGHT_MCP_CA_BUNDLE)');
+p.hook('preAction', command => {
+  const options = command.opts();
+  const bundle = options.caBundle || process.env.PLAYWRIGHT_MCP_CA_BUNDLE;
+  if (!bundle)
+    return;
+  try {
+    const { configureCABundle } = require('./ca-bundle');
+    const cleanup = configureCABundle(bundle, options);
+    process.once('exit', cleanup);
+  } catch (error) {
+    command.error(`CA bundle: ${error.message}`);
+  }
+});
 tools.decorateMCPCommand(p, packageJSON.version);
 
 void program.parseAsync(process.argv);

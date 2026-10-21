@@ -1,5 +1,9 @@
 ## Playwright MCP
 
+This fork adds Linux Chromium CA bundle support. Start with [CA bundle setup](CA-BUNDLE.md)
+and [GitHub / GHCR release instructions](RELEASING.md). The upstream `@playwright/mcp`
+npm package in the examples below does not include this fork's changes.
+
 A Model Context Protocol (MCP) server that provides browser automation capabilities using [Playwright](https://playwright.dev). This server enables LLMs to interact with web pages through structured accessibility snapshots, bypassing the need for screenshots or visually-tuned models.
 
 ### Playwright MCP vs Playwright CLI
@@ -406,6 +410,7 @@ Playwright MCP server supports following arguments. They can be provided in the 
 
 | Option | Description |
 |--------|-------------|
+| --ca-bundle <path> | Linux: trust PEM CA certificates in a temporary Chromium NSS database (env PLAYWRIGHT_MCP_CA_BUNDLE)<br>*env* `PLAYWRIGHT_MCP_CA_BUNDLE` |
 | --allowed-hosts <hosts...> | comma-separated list of hosts this server is allowed to serve from. Defaults to the host the server is bound to. Pass '*' to disable the host check.<br>*env* `PLAYWRIGHT_MCP_ALLOWED_HOSTS` |
 | --allowed-origins <origins> | semicolon-separated list of TRUSTED origins to allow the browser to request. Default is to allow all. Important: *does not* serve as a security boundary and *does not* affect redirects.<br>*env* `PLAYWRIGHT_MCP_ALLOWED_ORIGINS` |
 | --allow-unrestricted-file-access | allow access to files outside of the workspace roots. Also allows unrestricted access to file:// URLs. By default access to file system is restricted to workspace root directories (or cwd if no roots are configured) only, and navigation to file:// URLs is blocked.<br>*env* `PLAYWRIGHT_MCP_ALLOW_UNRESTRICTED_FILE_ACCESS` |

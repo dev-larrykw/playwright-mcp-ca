@@ -38,6 +38,12 @@ jobs:
       run: npm ci
     - name: Playwright install
       run: npx playwright install --with-deps
+    - name: Install NSS tools for CA bundle tests
+      if: runner.os == 'Linux'
+      run: sudo apt-get update && sudo apt-get install -y libnss3-tools
+    - name: Verify CA bundle support with Linux Chromium
+      if: runner.os == 'Linux'
+      run: node --test test-ca/unit.test.cjs test-ca/browser.test.cjs
     - name: Build
       run: npm run build
     - name: Run playwright-mcp tests

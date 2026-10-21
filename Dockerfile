@@ -28,7 +28,7 @@ RUN --mount=type=cache,target=/root/.npm,sharing=locked,id=npm-cache \
   sed -i "s|deb.debian.org|${DEBIAN_MIRROR_HOST}|g" /etc/apt/sources.list.d/debian.sources && \
   npx -y playwright-core install-deps chromium && \
   # tini reaps orphaned browser processes that would otherwise become zombies under node as PID 1.
-  apt-get install -y --no-install-recommends tini && \
+  apt-get install -y --no-install-recommends tini libnss3-tools && \
   rm -rf /var/lib/apt/lists/* && \
   sed -i "s|${DEBIAN_MIRROR_HOST}|deb.debian.org|g" /etc/apt/sources.list.d/debian.sources
 
@@ -71,7 +71,7 @@ RUN chown -R ${USERNAME}:${USERNAME} node_modules
 USER ${USERNAME}
 
 COPY --from=browser --chown=${USERNAME}:${USERNAME} ${PLAYWRIGHT_BROWSERS_PATH} ${PLAYWRIGHT_BROWSERS_PATH}
-COPY --chown=${USERNAME}:${USERNAME} cli.js package.json ./
+COPY --chown=${USERNAME}:${USERNAME} cli.js ca-bundle.js package.json ./
 
 # Current working directory must be writable as MCP may need to create default output dir in it.
 WORKDIR /home/${USERNAME}
